@@ -1,10 +1,11 @@
-# Spectre.Console.Extensions.Hosting
+# Spectre.Console.Extensions.Hosting-ng
 
 [![standard-readme compliant][]][standard-readme]
 [![Contributor Covenant][contrib-covenantimg]][contrib-covenant]
 [![Build][githubimage]][githubbuild]
 [![NuGet package][nugetimage]][nuget]
 
+[New and improved version](#improvements) of [juro-org/Spectre.Console.Extensions.Hosting](https://github.com/juro-org/Spectre.Console.Extensions.Hosting). 
 Adds [Spectre.Console CommandApp][SpectreConsoleDokuCommandApp] extensions for Microsoft.Extensions.Hosting. 
 
 ## Table of Contents
@@ -12,6 +13,7 @@ Adds [Spectre.Console CommandApp][SpectreConsoleDokuCommandApp] extensions for M
 - [Install](#install)
 - [Usage](#usage)
 - [Examples](#examples)
+- [Improvements](#improvements)
 - [Maintainer](#maintainer)
 - [Contributing](#contributing)
 - [License](#license)
@@ -58,6 +60,10 @@ It is also possible to customize the command configurations:
         })
         ...
 ```
+## Improvements
+
+- **Faster Startup Time:** Reduced startup time by approximately 100ms from the original version, which took at least 200ms.
+- **Better Dependency Injection:** Enhanced support for dependency injection, fixed issues with multiple dependency containers floating around.
 
 ## Examples 
 
