@@ -6,7 +6,7 @@ BuildParameters.SetParameters(
   context: Context,
   buildSystem: BuildSystem,
   sourceDirectoryPath: "./src",
-  title: "Spectre.Console.Extensions.Hosting-ng",
+  title: "Spectre.Console.Extensions.Hosting",
   masterBranchName: "main",
   repositoryOwner: "JKamsker",
   preferredBuildProviderType: BuildProviderType.GitHubActions,
