@@ -6,9 +6,9 @@ BuildParameters.SetParameters(
   context: Context,
   buildSystem: BuildSystem,
   sourceDirectoryPath: "./src",
-  title: "Spectre.Console.Extensions.Hosting",
+  title: "Spectre.Console.Extensions.Hosting-ng",
   masterBranchName: "main",
-  repositoryOwner: "juro-org",
+  repositoryOwner: "JKamsker",
   preferredBuildProviderType: BuildProviderType.GitHubActions,
   shouldRunDotNetCorePack: true,
   shouldUseDeterministicBuilds: true
