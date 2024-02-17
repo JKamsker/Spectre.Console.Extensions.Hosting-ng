@@ -1,9 +1,12 @@
 using System.Threading;
+
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+
 using Spectre.Console.Cli;
+using Spectre.Console.Extensions.Hosting.Infrastructure;
 
 namespace Spectre.Console.Extensions.Hosting.Worker;
 
@@ -11,26 +14,33 @@ public class SpectreConsoleWorker : IHostedService
 {
     private readonly ICommandApp _commandApp;
     private readonly IHostApplicationLifetime _hostLifetime;
+    private readonly IArgsProvider _argsProvider;
     private readonly ILogger<SpectreConsoleWorker> _logger;
     private int _exitCode;
-    private Task startupTask;
+    private Task? _startupTask;
 
-    public SpectreConsoleWorker(ILogger<SpectreConsoleWorker> logger, ICommandApp commandApp,
-        IHostApplicationLifetime hostLifetime)
+    public SpectreConsoleWorker
+    (
+        ILogger<SpectreConsoleWorker> logger,
+        ICommandApp commandApp,
+        IHostApplicationLifetime hostLifetime,
+        IArgsProvider? argsProvider = null
+    )
     {
         _logger = logger;
         _commandApp = commandApp;
         _hostLifetime = hostLifetime;
+        _argsProvider = argsProvider ?? new CommandLineArgsProvider();
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        startupTask = WaitAndStartAsync(cancellationToken);
+        _startupTask = WaitAndStartAsync(cancellationToken);
         // If the task completed synchronously, await it in order to bubble potential cancellation/failure to the caller
         // Otherwise, return, allowing application startup to complete
-        if (startupTask.IsCompleted)
+        if (_startupTask.IsCompleted)
         {
-            await startupTask.ConfigureAwait(false);
+            await _startupTask.ConfigureAwait(false);
         }
     }
 
@@ -57,7 +67,7 @@ public class SpectreConsoleWorker : IHostedService
     {
         try
         {
-            var args = GetArgs();
+            var args = _argsProvider.GetArgs();
             _exitCode = await _commandApp.RunAsync(args);
         }
         catch (Exception ex)
@@ -74,21 +84,15 @@ public class SpectreConsoleWorker : IHostedService
     public async Task StopAsync(CancellationToken cancellationToken)
     {
         // Stopped without having been started
-        if (startupTask is null)
+        if (_startupTask is null)
         {
             Environment.ExitCode = _exitCode;
             return;
         }
 
         // Wait until any ongoing startup logic has finished or the graceful shutdown period is over
-        await Task.WhenAny(startupTask, Task.Delay(Timeout.Infinite, cancellationToken)).ConfigureAwait(false);
+        await Task.WhenAny(_startupTask, Task.Delay(Timeout.Infinite, cancellationToken)).ConfigureAwait(false);
 
         Environment.ExitCode = _exitCode;
-    }
-
-    private static string[] GetArgs()
-    {
-        //Remove path from command line args
-        return Environment.GetCommandLineArgs().Skip(1).ToArray();
     }
 }

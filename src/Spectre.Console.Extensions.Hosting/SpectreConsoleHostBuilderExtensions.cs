@@ -34,6 +34,9 @@ public static class SpectreConsoleHostBuilderExtensions
 
                     return command;
                 });
+
+                collection.AddHostedService<SpectreConsoleWorker>();
+                collection.UseDefaultSpectreConsoleArgs();
             }
         );
 
@@ -71,6 +74,8 @@ public static class SpectreConsoleHostBuilderExtensions
                 });
 
                 collection.AddHostedService<SpectreConsoleWorker>();
+
+                collection.UseDefaultSpectreConsoleArgs();
             }
         );
 

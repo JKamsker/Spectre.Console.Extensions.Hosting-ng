@@ -11,7 +11,6 @@ public sealed class HelloWorldGreeter : IGreeter
 {
     public void Greet(string name)
     {
-        var time = Program.Stopwatch.Elapsed.TotalMilliseconds;
-        AnsiConsole.MarkupLine($"[yellow]Hello[/] [green]{name}[/]! [grey](in {time}ms)[/]");
+        AnsiConsole.MarkupLine($"[yellow]Hello[/]");
     }
 }
