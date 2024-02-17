@@ -89,8 +89,8 @@ Small note: If editing the Readme, please conform to the [standard-readme][] spe
 [contrib-covenant]: https://www.contributor-covenant.org/version/1/4/code-of-conduct
 [contrib-covenantimg]: https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg
 [maintainer]: https://github.com/JKamsker
-[nuget]: https://nuget.org/packages/Spectre.Console.Extensions.Hosting
-[nugetimage]: https://img.shields.io/nuget/v/Spectre.Console.Extensions.Hosting.svg?logo=nuget&style=flat-square
+[nuget]: https://nuget.org/packages/JKToolKit.Spectre.Console.Extensions.Hosting-ng
+[nugetimage]: https://img.shields.io/nuget/v/JKToolKit.Spectre.Console.Extensions.Hosting-ng.svg?logo=nuget&style=flat-square
 [license]: LICENSE.txt
 [standard-readme]: https://github.com/RichardLitt/standard-readme
 [standard-readme compliant]: https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square
