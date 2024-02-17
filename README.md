@@ -20,10 +20,10 @@ Adds [Spectre.Console CommandApp][SpectreConsoleDokuCommandApp] extensions for M
 
 ## Install
 
-Install the Spectre.Console.Extensions.Hosting NuGet package into your app.
+Install the Spectre.Console.Extensions.Hosting-ng NuGet package into your app.
 
 ```powershell
-Install-Package Spectre.Console.Extensions.Hosting
+Install-Package JKToolKit.Spectre.Console.Extensions.Hosting-ng
 ```
 ## Usage
 

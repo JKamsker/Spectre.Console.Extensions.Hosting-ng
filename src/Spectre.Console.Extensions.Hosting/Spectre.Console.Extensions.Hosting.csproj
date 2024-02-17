@@ -13,9 +13,10 @@
     <FullYear Condition="'$(StartYear)'=='$(EndYear)'">$(StartYear)</FullYear>
     <FullYear Condition="'$(StartYear)'!='$(EndYear)'">$(StartYear)-$(EndYear)</FullYear>
     <!-- Properties related to packaging -->
-    <Title>Spectre.Console.Extensions.Hosting</Title>
-    <Authors>Jürgen Rosenthal-Buroh</Authors>
-    <Copyright>Copyright © $(FullYear) — Jürgen Rosenthal-Buroh</Copyright>
+    <Title>Spectre.Console.Extensions.Hosting-ng</Title>
+    <AssemblyName>JKToolKit.Spectre.Console.Extensions.Hosting-ng</AssemblyName> <!--Nuget name-->
+    <Authors>Jonas Kamsker</Authors>
+    <Copyright>Copyright © $(FullYear) — Jonas Kamsker</Copyright>
     <Description>Extension of IHostBuilder. Allows to use Spectre Console with IHostService and ServiceCollection of the host.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/JKamsker/Spectre.Console.Extensions.Hosting-ng</PackageProjectUrl>
