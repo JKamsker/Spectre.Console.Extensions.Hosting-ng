@@ -60,7 +60,6 @@ public static class SpectreConsoleHostBuilderExtensions
         where TDefaultCommand : class, ICommand
     {
         builder = builder ?? throw new ArgumentNullException(nameof(builder));
-
         builder.ConfigureServices((_, collection) =>
             {
                 collection.AddSingleton<ICommandApp>(sp =>
@@ -85,6 +84,29 @@ public static class SpectreConsoleHostBuilderExtensions
                 collection.UseDefaultSpectreConsoleArgs();
             }
         );
+
+        return builder;
+    }
+
+    public static HostApplicationBuilder UseSpectreConsole(this HostApplicationBuilder builder, Action<IConfigurator> configureCommandApp)
+    {
+        builder = builder ?? throw new ArgumentNullException(nameof(builder));
+
+        var collection = builder.Services;
+
+        collection.AddSingleton<ICommandApp>(sp =>
+        {
+            var scope = sp.CreateScope();
+            var registrar = TieredTypeRegistrar.FromServices(scope.ServiceProvider);
+
+            var command = new CommandApp(registrar);
+            command.Configure(configureCommandApp);
+
+            return command;
+        });
+
+        collection.AddHostedService<SpectreConsoleWorker>();
+        collection.UseDefaultSpectreConsoleArgs();
 
         return builder;
     }
