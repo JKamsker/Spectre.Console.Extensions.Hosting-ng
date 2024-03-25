@@ -30,7 +30,11 @@ public static class SpectreConsoleHostBuilderExtensions
                     var registrar = TieredTypeRegistrar.FromServices(scope.ServiceProvider);
 
                     var command = new CommandApp(registrar);
-                    command.Configure(configureCommandApp);
+                    command.Configure(config =>
+                    {
+                        var wrapper = new ConfigurationWrapper(config, sp.GetRequiredService<Overridable<IArgsProvider>>());
+                        configureCommandApp(wrapper);
+                    });
 
                     return command;
                 });
@@ -67,14 +71,17 @@ public static class SpectreConsoleHostBuilderExtensions
                     var command = new CommandApp<TDefaultCommand>(registrar);
                     if (configureCommandApp != null)
                     {
-                        command.Configure(configureCommandApp);
+                        command.Configure(config =>
+                        {
+                            var wrapper = new ConfigurationWrapper(config, sp.GetRequiredService<Overridable<IArgsProvider>>());
+                            configureCommandApp(wrapper);
+                        });
                     }
 
                     return command;
                 });
 
                 collection.AddHostedService<SpectreConsoleWorker>();
-
                 collection.UseDefaultSpectreConsoleArgs();
             }
         );

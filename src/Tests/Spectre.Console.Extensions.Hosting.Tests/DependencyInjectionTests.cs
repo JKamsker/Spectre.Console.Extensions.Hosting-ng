@@ -51,7 +51,7 @@ public class DependencyInjectionTests
     }
 
     [Fact]
-    public void CommandApp_Values_Are_Injected()
+    public void CommandApp_Values_Are_Injected_Via_ConfigureServices()
     {
         new HostBuilder()
             .UseSpectreConsole(command =>
@@ -62,18 +62,37 @@ public class DependencyInjectionTests
             .ConfigureServices((_, collection) => collection.UseSpectreConsoleArgs("test", "-n", "abc"))
             .UseConsoleLifetime()
             .Build().Run();
+        Assert.Equal(0, Environment.ExitCode);
+    }
+
+    [Fact]
+    public void CommandApp_Values_Are_Injected_Via_Command_Configuration()
+    {
+        new HostBuilder()
+             .UseSpectreConsole(command =>
+             {
+                 command.AddCommand<TestCommand>("test");
+                 command.PropagateExceptions();
+                 command.UseArgs("test", "-n", "abc");
+             })
+             .UseConsoleLifetime()
+             .Build().Run();
 
         Assert.Equal(0, Environment.ExitCode);
+    }
 
+    [Fact]
+    public void CommandApp_Different_Values_Result_In_Different_ExitCode()
+    {
         new HostBuilder()
-                  .UseSpectreConsole(command =>
-                  {
-                      command.AddCommand<TestCommand>("test");
-                      command.PropagateExceptions();
-                  })
-                   .ConfigureServices((_, collection) => collection.UseSpectreConsoleArgs("test", "-n", "def"))
-                   .UseConsoleLifetime()
-                   .Build().Run();
+            .UseSpectreConsole(command =>
+            {
+                command.AddCommand<TestCommand>("test");
+                command.PropagateExceptions();
+            })
+            .ConfigureServices((_, collection) => collection.UseSpectreConsoleArgs("test", "-n", "def"))
+            .UseConsoleLifetime()
+            .Build().Run();
 
         Assert.Equal(1, Environment.ExitCode);
     }
