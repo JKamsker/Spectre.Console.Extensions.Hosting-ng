@@ -88,13 +88,30 @@ public class DependencyInjectionTests
             .UseSpectreConsole(command =>
             {
                 command.AddCommand<TestCommand>("test");
+                command.SetExceptionHandler(_ => 123);
+            })
+            .ConfigureServices((_, collection) => collection.UseSpectreConsoleArgs("test", "-n", "def"))
+            .UseConsoleLifetime()
+            .Build().Run();
+
+        Assert.Equal(123, Environment.ExitCode);
+    }
+
+    [Fact]
+    public void CommandApp_Different_Values_Propagates_Exception()
+    {
+        var run = () => new HostBuilder()
+            .UseSpectreConsole(command =>
+            {
+                command.AddCommand<TestCommand>("test");
                 command.PropagateExceptions();
             })
             .ConfigureServices((_, collection) => collection.UseSpectreConsoleArgs("test", "-n", "def"))
             .UseConsoleLifetime()
             .Build().Run();
 
-        Assert.Equal(1, Environment.ExitCode);
+        var exception = Assert.Throws<InvalidOperationException>(run);
+        Assert.Equal("Name is not abc", exception.Message);
     }
 
     public class TestSettings : CommandSettings
